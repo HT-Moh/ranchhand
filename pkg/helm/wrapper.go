@@ -34,7 +34,7 @@ type ReleaseInfo struct {
 	Description string
 	Version     string
 	Wait        bool
-	SetValues   string
+	SetValues   map[string]string
 }
 
 type wrapper struct {
@@ -119,8 +119,9 @@ func (w *wrapper) InstallRelease(chstr string, ri *ReleaseInfo) error {
 	if ri.Version != "" {
 		flags = append(flags, fmt.Sprintf("--version=%s", ri.Version))
 	}
-	if ri.SetValues != "" {
-		flags = append(flags, fmt.Sprintf("--set=%q", ri.SetValues))
+	for key, value := range ri.SetValues {
+		flags = append(flags, "--set")
+		flags = append(flags, fmt.Sprintf("%s=%s", key, value))
 	}
 	if ri.Wait {
 		flags = append(flags, "--wait")

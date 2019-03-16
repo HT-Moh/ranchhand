@@ -36,7 +36,10 @@ var (
 				Name:      "rancher",
 				Namespace: "cattle-system",
 				Version:   "2019.1.2",
-				SetValues: "rancherImageTag=v2.1.6,tls=external",
+				SetValues: map[string]string{
+					"rancherImageTag": "v2.1.6",
+					"hostname":        "rancher.stevedaz.internal",
+				},
 			},
 		},
 	}
@@ -75,7 +78,7 @@ func installRancher(h helm.Helm, nodeIP string) error {
 		}
 	}
 
-	return pingRancherAPI(nodeIP)
+	return pingRancherAPI("rancher.stevedaz.internal")
 }
 
 func pingRancherAPI(host string) error {
